@@ -13,9 +13,5 @@ COPY . .
 
 RUN python manage.py collectstatic --noinput || true
 
-# Copy and make entrypoint executable
-COPY entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
-
-# Use bash to run the entrypoint
-ENTRYPOINT "/bin/bash", "/app/entrypoint.sh"
+# Remove ENTRYPOINT - use simple CMD instead
+CMD python manage.py migrate --noinput && gunicorn Breath_Pacer_Backend.wsgi:application --bind 0.0.0.0:8000
