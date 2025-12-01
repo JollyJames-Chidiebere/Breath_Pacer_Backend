@@ -22,4 +22,4 @@ RUN python manage.py collectstatic --noinput || true
 # They will run in the release phase via Procfile
 
 # Start command is in Procfile
-CMD ["gunicorn", "Breath_Pacer_Backend.wsgi:application", "--bind", "0.0.0.0:$PORT"]
+CMD CMD gunicorn Breath_Pacer_Backend.wsgi:application --bind 0.0.0.0:$PORT
