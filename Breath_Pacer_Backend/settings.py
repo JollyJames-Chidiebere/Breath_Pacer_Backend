@@ -33,8 +33,11 @@ SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
 DEBUG = os.getenv("DEBUG", "True").lower() in ("1", "true", "yes")
 
 # Allow all hosts in development
-ALLOWED_HOSTS = ['*']  # For development only - restrict in production!
-
+ALLOWED_HOSTS = [
+    'web-production-c5bc.up.railway.app',  # Your Railway domain
+    'localhost',  # For local testing
+    '127.0.0.1',  # For local testing
+]
 
 # Application definition
 
