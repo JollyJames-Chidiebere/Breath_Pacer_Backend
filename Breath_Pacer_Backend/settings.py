@@ -29,8 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "True").lower() in ("1", "true", "yes")
+# DEBUG is False by default for safety - set DEBUG=True in local .env for development
+DEBUG = os.getenv("DEBUG", "False").lower() in ("1", "true", "yes")
 
 # Allow all hosts in development
 ALLOWED_HOSTS = [
