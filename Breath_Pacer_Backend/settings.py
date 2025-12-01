@@ -26,15 +26,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY environment variable must be set!")
 
 # DEBUG is False by default for safety - set DEBUG=True in local .env for development
 DEBUG = os.getenv("DEBUG", "False").lower() in ("1", "true", "yes")
 
 # Allow all hosts in development
 ALLOWED_HOSTS = [
-    'web-production-c5bc.up.railway.app',  # Your Railway domain
+    'web-production-c5bc.up.railway.app',  #Railway domain
     'localhost',  # For local testing
     '127.0.0.1',  # For local testing
 ]
@@ -165,8 +166,15 @@ REST_FRAMEWORK = {
 }
 
 
-
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS Configuration - restrict to your frontend domains
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8081",  # Expo dev server
+    "http://localhost:19006",  # Expo web
+    "http://127.0.0.1:8081",
+    "http://192.168.2.13:8081",  # Your local IP
+]
+CORS_ALLOW_CREDENTIALS = True
 
 # Configuring Firebase in Django (Firebase Admin)
 _cert_path = os.getenv("FIREBASE_CERT_PATH") or str(BASE_DIR / "firebase_key.json")
