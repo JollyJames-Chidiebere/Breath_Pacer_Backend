@@ -29,3 +29,6 @@ node_modules/
 
 # Secrets
 firebase_key.json
+*.pem
+*.key
+.env
