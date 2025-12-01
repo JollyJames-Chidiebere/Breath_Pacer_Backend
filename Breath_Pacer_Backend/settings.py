@@ -177,13 +177,23 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 # Configuring Firebase in Django (Firebase Admin)
-_cert_path = os.getenv("FIREBASE_CERT_PATH") or str(BASE_DIR / "firebase_key.json")
-if os.path.exists(_cert_path):
-    try:
-        if not firebase_admin._apps:
-            cred = credentials.Certificate(_cert_path)
+import json
+
+try:
+    if not firebase_admin._apps:
+        # Try environment variable first (for Railway/production)
+        firebase_creds_json = os.getenv("FIREBASE_CREDENTIALS")
+        if firebase_creds_json:
+            cred = credentials.Certificate(json.loads(firebase_creds_json))
             firebase_admin.initialize_app(cred)
-    except Exception as e:
-        # Don't crash settings import on dev; raise in prod if desired.
-        # print(f"WARNING: Firebase init failed: {e}")
-        pass
+            print("✅ Firebase initialized from environment variable")
+        else:
+            # Fall back to file (for local development)
+            cert_path = str(BASE_DIR / "firebase_key.json")
+            if os.path.exists(cert_path):
+                cred = credentials.Certificate(cert_path)
+                firebase_admin.initialize_app(cred)
+                print("✅ Firebase initialized from file")
+except Exception as e:
+    print(f"⚠️ WARNING: Firebase init failed: {e}")
+    pass
