@@ -167,7 +167,7 @@ REST_FRAMEWORK = {
 
 
 # CORS Configuration - restrict to your frontend domains
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8081",  # Expo dev server
     "http://localhost:19006",  # Expo web
