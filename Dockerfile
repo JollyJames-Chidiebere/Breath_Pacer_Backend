@@ -21,5 +21,4 @@ RUN python manage.py collectstatic --noinput || true
 # Don't run migrations here!
 # They will run in the release phase via Procfile
 
-# Start command is in Procfile
-CMD CMD gunicorn Breath_Pacer_Backend.wsgi:application --bind 0.0.0.0:$PORT
+
