@@ -13,8 +13,9 @@ COPY . .
 
 RUN python manage.py collectstatic --noinput || true
 
-# Make entrypoint executable
-RUN chmod +x entrypoint.sh
+# Copy and make entrypoint executable
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
-# Use entrypoint script
-ENTRYPOINT ["./entrypoint.sh"]
+# Use bash to run the entrypoint
+ENTRYPOINT ["/bin/bash", "/app/entrypoint.sh"]
