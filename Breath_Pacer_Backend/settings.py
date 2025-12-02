@@ -12,9 +12,13 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os 
+import json
 from dotenv import load_dotenv 
 import firebase_admin
 from firebase_admin import credentials
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 load_dotenv()  # loads variables from .env
@@ -177,23 +181,29 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 # Configuring Firebase in Django (Firebase Admin)
-import json
-
 try:
     if not firebase_admin._apps:
-        # Try environment variable first (for Railway/production)
         firebase_creds_json = os.getenv("FIREBASE_CREDENTIALS")
+        
         if firebase_creds_json:
-            cred = credentials.Certificate(json.loads(firebase_creds_json))
-            firebase_admin.initialize_app(cred)
-            print("✅ Firebase initialized from environment variable")
+            try:
+                creds_dict = json.loads(firebase_creds_json)
+                cred = credentials.Certificate(creds_dict)
+                firebase_admin.initialize_app(cred)
+                print("✅ Firebase initialized from environment variable", flush=True)
+            except json.JSONDecodeError as json_err:
+                print(f"❌ Firebase JSON parse error: {json_err}", flush=True)
+                raise
         else:
-            # Fall back to file (for local development)
             cert_path = str(BASE_DIR / "firebase_key.json")
             if os.path.exists(cert_path):
                 cred = credentials.Certificate(cert_path)
                 firebase_admin.initialize_app(cred)
-                print("✅ Firebase initialized from file")
+                print("✅ Firebase initialized from file", flush=True)
+            else:
+                print("⚠️ No Firebase credentials found", flush=True)
 except Exception as e:
-    print(f"⚠️ WARNING: Firebase init failed: {e}")
-    pass
+    print(f"❌ CRITICAL: Firebase init failed: {e}", flush=True)
+    import traceback
+    traceback.print_exc()
+    raise
