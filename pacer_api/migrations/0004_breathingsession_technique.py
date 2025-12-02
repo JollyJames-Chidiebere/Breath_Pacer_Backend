@@ -15,3 +15,5 @@ class Migration(migrations.Migration):
             name='technique',
             field=models.CharField(blank=True, default='Breathing 2(Oscilloscope)', max_length=128),
         ),
+    ]
+
