@@ -36,7 +36,7 @@ class BreathingSession(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     synced_at = models.DateTimeField(auto_now=True)     
     device     = models.CharField(max_length=64, blank=True, default="")
-    technique = models.CharField(max_length=128, blank=True, default="Breathing 2(Oscilloscope)")  # Breathing technique used
+    technique = models.CharField(max_length=128, blank=True, default="")  # Breathing technique used
 
     class Meta:
         ordering = ["-created_at"]
