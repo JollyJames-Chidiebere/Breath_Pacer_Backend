@@ -20,7 +20,7 @@ class BreathingSessionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BreathingSession
-        fields = ["id", "user", "plan", "duration_seconds", "inhale_seconds", "hold_seconds", "exhale_seconds", "exhale_hold_seconds", "device", "created_at", "synced_at"]
+        fields = ["id", "user", "plan", "duration_seconds", "technique", "inhale_seconds", "hold_seconds", "exhale_seconds", "exhale_hold_seconds", "device", "created_at", "synced_at"]
         read_only_fields = ["id", "user", "created_at", "synced_at"]
 
 class UserProgressSerializer(serializers.ModelSerializer):
