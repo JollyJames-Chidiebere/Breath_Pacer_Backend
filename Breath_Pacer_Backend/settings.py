@@ -103,7 +103,7 @@ database_url = os.getenv('DATABASE_URL')
 if database_url:
     # Railway/Production: Use DATABASE_URL
     DATABASES = {
-        'default': dj_database_url.parse(database_url, conn_max_age=60)
+        'default': dj-database-url.parse(database_url, conn_max_age=60)
     }
 else:
     # Local development: Use individual variables
