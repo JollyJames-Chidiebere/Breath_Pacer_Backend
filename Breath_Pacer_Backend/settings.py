@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials
 import logging
-import dj_database_url
+import dj-database-url
 
 logger = logging.getLogger(__name__)
 
