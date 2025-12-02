@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials
 import logging
-import dj-database-url
+import dj_database_url
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +103,7 @@ database_url = os.getenv('DATABASE_URL')
 if database_url:
     # Railway/Production: Use DATABASE_URL
     DATABASES = {
-        'default': dj-database-url.parse(database_url, conn_max_age=60)
+        'default': dj_database_url.parse(database_url, conn_max_age=60)
     }
 else:
     # Local development: Use individual variables
