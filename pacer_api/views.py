@@ -89,6 +89,13 @@ def sync_sessions(request):
         if serializer.is_valid():
             session = serializer.save(user=user)
             saved.append(session.id)
+            
+            # Update user progress
+            progress, _ = UserProgress.objects.get_or_create(user=user)
+            progress.total_sessions += 1
+            progress.total_minutes += session.duration_seconds // 60
+            progress.last_session = session.created_at
+            progress.save()
         else:
             errors.append(serializer.errors)
 

@@ -4,22 +4,12 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework import exceptions
 from django.conf import settings
 
-import os
 import firebase_admin
-from firebase_admin import auth as firebase_auth, credentials
+from firebase_admin import auth as firebase_auth
+import logging
 
-# Initialize Firebase once ()
-if not firebase_admin._apps:
-    path = os.getenv("FIREBASE_CERT_PATH")
-    try:
-        if path and os.path.exists(path):
-            cred = credentials.Certificate(path)
-            firebase_admin.initialize_app(cred)
-        else:
-            firebase_admin.initialize_app()
-    except Exception:
-        # don't crash on dev
-        pass
+# Firebase is initialized in settings.py - don't initialize again here
+logger = logging.getLogger(__name__)
 
 class FirebaseAuthentication(BaseAuthentication):
     """
@@ -39,6 +29,7 @@ class FirebaseAuthentication(BaseAuthentication):
         try:
             decoded = firebase_auth.verify_id_token(token)
         except Exception as e:
+            logger.error(f"Firebase token verification failed: {str(e)}", exc_info=True)
             raise exceptions.AuthenticationFailed("Invalid or expired Firebase ID token.") from e
 
         uid = decoded.get("uid")
